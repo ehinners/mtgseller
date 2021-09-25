@@ -37,7 +37,7 @@ public class BasicCardService implements CardService
     {
         List<MtgCard> list = new ArrayList<>();
         cardRepository.findAll().forEach(list::add);
-
+        //yes
         return list;
     }
 }
