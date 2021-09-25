@@ -18,6 +18,7 @@ public class BasicCardService implements CardService
     public BasicCardService(CardRepository cr)
     {
         this.cardRepository = cr;
+
     }
 
     @Override
