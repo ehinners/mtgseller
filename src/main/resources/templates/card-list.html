@@ -6,19 +6,33 @@
 </head>
 <body>
 
-    <div th:each="card : ${cardList}">
 
-        <h3 th:text="${card.cardName}">CARD</h3>
-        <p th:text="${card.setName}">SET</p>
-        <p th:text="${card.numHave}">INVENTORY</p>
-        <img th:src="@{/img/{file}(file=${card.cardImageFileName})}" th:alt="${card.cardName}">
-        <br/>
-        <button>Add To Cart</button>
-        <br/>
-        <button>Remove One From Cart</button>
-        <br/>
-        <button>Remove All From Cart</button>
 
-    </div>
+    <table>
+        <tr>
+            <th>Card</th>
+            <th></th>
+            <th>Set</th>
+            <th>Number Available</th>
+            <th></th>
+        </tr>
+        <tr th:each="card,iter : ${cardList}">
+            <td th:text="${card.cardName}">CARD</td>
+            <td>
+                <img th:src="@{/img/{file}(file=${card.cardImageFileName})}" th:alt="${card.cardName}">
+            </td>
+            <td th:text="${card.setName}">SET</td>
+            <td th:text="${cardInventoryList.get(iter.index).count}">AVAILABLE</td>
+            <td><br/>
+                <button>Add To Cart</button>
+                <br/>
+                <button>Remove One From Cart</button>
+                <br/>
+                <button>Remove All From Cart</button>
+            </td>
+
+        </tr>
+
+    </table>
 </body>
 </html>

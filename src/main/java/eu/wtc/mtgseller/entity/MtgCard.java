@@ -34,6 +34,26 @@ public class MtgCard
     @Column(name = "card_image_file_name")
     private String cardImageFileName;
 
-    @Column(name = "number_Have")
-    private int numHave;
+    /*
+        Card Name
+        Card Image (Depends on Name, Printing And Set)
+        Card Set
+        Card Printing (Special treatments, alternate arts, useful for basic Lands)
+        Card Price (USD) (Depends on everything except number owned)
+        Card Condition(D HP MP LP NM)
+        (Damaged, Heavily Played, Moderately Played, Lightly Played, Near Mint)
+        Foil
+
+        Number Owned
+
+
+        GUARANTEED TO BE 1 TO 1
+        Card Price, Card Condition, and Foil
+        maybe rename to Unit Price, Unit Condition, and Unit Foil
+
+        Avoid:
+         - Update Anomaly (When one piece of data must be manually updated in multiple places)
+         - Insertion Anomaly (When data cannot be entered)
+         - Deletion Anomaly (Loss of unrelated data lost if other piece of data is deleted)
+    */
 }
