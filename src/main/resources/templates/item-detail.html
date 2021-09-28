@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Detail</title>
+    <link th:href="@{/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<table>
+    <tr>
+        <th>Card</th>
+        <th>Set</th>
+        <th></th> <!-- IMAGE -->
+        <th>Number Available</th>
+        <th>Price</th>
+        <th></th> <!-- BUTTON OPTIONS -->
+    </tr>
+    <tr>
+        <td th:text="${product.cardName}">CARD</td>
+        <td th:text="${product.setName}">SET</td>
+        <td>
+            <img class="productImage" th:src="@{/img/{file}(file=${product.cardImageFileName})}" th:alt="${product.cardName}">
+        </td>
+        <td th:text="${listing.count}">AVAILABLE</td>
+        <td th:text="${product.costUSD}">PRICE</td>
+        <td>
+            <form method="post">
+
+
+                <label for="count">How Many Would You Like?</label>
+
+                <input type="number" id="count" name="count" value="0"/>
+
+                <br/>
+
+                <input type="submit" value="Update Cart"/>
+            </form>
+
+        </td>
+
+    </tr>
+
+</table>
+</body>
+</html>

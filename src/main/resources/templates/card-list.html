@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>View All Cards</title>
+    <link th:href="@{/styles.css}" rel="stylesheet"/>
 </head>
 <body>
 
+<p th:unless="${cardList} and ${cardList.size()}">No cards :(</p>
 
 
     <table>
         <tr>
             <th>Card</th>
-            <th></th>
             <th>Set</th>
+            <th></th> <!-- IMAGE -->
             <th>Number Available</th>
-            <th></th>
+            <th>Price</th>
+            <th></th> <!-- BUTTON OPTIONS -->
         </tr>
         <tr th:each="card,iter : ${cardList}">
             <td th:text="${card.cardName}">CARD</td>
-            <td>
-                <img th:src="@{/img/{file}(file=${card.cardImageFileName})}" th:alt="${card.cardName}">
-            </td>
             <td th:text="${card.setName}">SET</td>
+            <td>
+                <img class="cardImage" th:src="@{/img/{file}(file=${card.cardImageFileName})}" th:alt="${card.cardName}">
+            </td>
             <td th:text="${cardInventoryList.get(iter.index).count}">AVAILABLE</td>
-            <td><br/>
-                <button>Add To Cart</button>
+            <td th:text="${card.costUSD}">PRICE</td>
+            <td>
                 <br/>
-                <button>Remove One From Cart</button>
-                <br/>
-                <button>Remove All From Cart</button>
+                <button  th:onclick="|document.location='@{/list/update(id=${card.id})}'|">Select Card</button>
+
             </td>
 
         </tr>
 
     </table>
+    <button  th:onclick="|document.location='@{/list/checkout}'|">CHECKOUT</button>
 </body>
 </html>

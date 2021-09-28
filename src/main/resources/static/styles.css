@@ -1,0 +1,19 @@
+*
+{
+    color: green;
+}
+
+body
+{
+    background-color: aquamarine;
+}
+
+.cardImage
+{
+    width: 5em;
+    height: auto;
+}
+
+th{
+    color: blueviolet;
+}

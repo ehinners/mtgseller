@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Checkout</title>
+    <link th:href="@{/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+
+    <p th:unless="${cart} and ${cart.size()}">Nothing In Cart</p>
+
+
+    <table>
+        <tr>
+            <th>Card</th>
+            <th>Set</th>
+            <th></th> <!-- IMAGE -->
+            <th>Count</th>
+            <th>Price</th>
+            <th>SubTotal</th> <!-- BUTTON OPTIONS -->
+        </tr>
+        <tr th:each="order: ${cart}">
+            <td th:text="${order.card.cardName}">CARD</td>
+            <td th:text="${order.card.setName}">SET</td>
+            <td>
+                <img class="cardImage" th:src="@{/img/{file}(file=${order.card.cardImageFileName})}" th:alt="${order.card.cardName}">
+            </td>
+            <td th:text="${order.quantityChosen} + ' X' ">AVAILABLE</td>
+            <td th:text="${order.card.costUSD}">PRICE</td>
+
+            <td th:with="var=${(order.card.costUSD) * (order.quantityChosen)}"th:text="${#numbers.formatDecimal(var, 1, 'COMMA', 2, 'POINT')}">MULTIPLIER</td>
+
+        </tr>
+        <tr>
+            <td></td><td></td><td></td><td></td><td>Subtotal: </td>
+            <td th:text="${#numbers.formatDecimal(subtotal, 1, 'COMMA', 2, 'POINT')}">SUBTOTAL</td>
+        </tr>
+        <tr>
+            <td></td><td></td><td></td><td></td><td>State Tax: </td>
+            <td th:text="${#numbers.formatDecimal(tax, 1, 'COMMA', 2, 'POINT')}">TAX</td>
+        </tr>
+        <tr>
+            <td></td><td></td><td></td><td></td><td>Total: </td>
+            <td th:text="${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">TOTAL</td>
+        </tr>
+
+
+    </table>
+
+<button>Confirm Order</button>
+
+
+</body>
+</html>
