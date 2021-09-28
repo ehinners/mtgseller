@@ -38,4 +38,15 @@ public class BasicCardInventoryService implements CardInventoryService
         cardInventoryRepository.findAll().forEach(list::add);
         return list;
     }
+
+    @Override
+    public void updateListing(int cardID, int newCount)
+    {
+        if(newCount>=0)
+        {
+            CardListing cl = cardInventoryRepository.findCardListingByCardId(cardID);
+            cl.setCount(newCount);
+            cardInventoryRepository.save(cl);
+        }
+    }
 }

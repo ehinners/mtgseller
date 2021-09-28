@@ -106,4 +106,23 @@ public class DetailController
         model.addAttribute("total", total);
         return "checkout";
     }
+
+    @RequestMapping("/confirm")
+    public String updateListingsFromConfirmation()
+    {
+        int newCount;
+        List<CardListing> listList = cardInventoryService.getListingList();
+        for(CardListing cl : listList)
+        {
+            for(MtgOrder mo : cart)
+            {
+                if(mo.getCard().getId() == cl.getCardId())
+                {
+                    newCount = cl.getCount() - mo.getQuantityChosen();
+                    cardInventoryService.updateListing(cl.getCardId(), newCount);
+                }
+            }
+        }
+        return "redirect:";
+    }
 }

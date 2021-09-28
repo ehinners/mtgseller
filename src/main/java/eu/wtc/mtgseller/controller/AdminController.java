@@ -42,13 +42,27 @@ public class AdminController
     }
 
     @RequestMapping(value ="AddCard", method = RequestMethod.GET)
-    public String ShowAdminDetail(Model model)
+    public String ShowAdminAdder(Model model)
     {
         return "supersecretadminNewCardpage7752";
     }
 
     @RequestMapping(value ="AddCard", method = RequestMethod.POST)
     public String processAddCard(@RequestParam String newName, String newSet, String newImageLocation, String initialAvailable, String newPrice)
+    {
+        System.out.println(newName + "" + newSet + "" +newImageLocation + "" +initialAvailable + "" +newPrice);
+        return "redirect:";
+    }
+
+
+    @RequestMapping(value ="UpdateCard", method = RequestMethod.GET)
+    public String ShowAdminDetail(Model model)
+    {
+        return "supersecretadmindetailpage9888";
+    }
+
+    @RequestMapping(value ="UpdateCard", method = RequestMethod.POST)
+    public String processUpdateCard(@RequestParam String newName, String newSet, String newImageLocation, String initialAvailable, String newPrice)
     {
         System.out.println(newName + "" + newSet + "" +newImageLocation + "" +initialAvailable + "" +newPrice);
         return "redirect:";

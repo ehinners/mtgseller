@@ -10,4 +10,6 @@ public interface CardInventoryService
     CardListing getListing(int listingId);
 
     List<CardListing> getListingList();
+
+    public void updateListing(int cardID, int newCount);
 }
