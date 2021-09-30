@@ -13,6 +13,7 @@
         <th>Set</th>
         <th></th> <!-- IMAGE -->
         <th>Number Available</th>
+        <th>Condition</th>
         <th>Price</th>
         <th></th> <!-- BUTTON OPTIONS -->
     </tr>
@@ -23,6 +24,14 @@
             <img class="productImage" th:src="@{/img/{file}(file=${product.cardImageFileName})}" th:alt="${product.cardName}">
         </td>
         <td th:text="${listing.count}">AVAILABLE</td>
+        <td >
+            <div th:text="${product.condition}">CONDITION</div>
+            <br>
+            <div class="question" title="Card Condition(D HP MP LP NM) &#13;&#10;
+        (Damaged, Heavily Played, Moderately Played, Lightly Played, Near Mint)">
+                <img th:src="@{/img/{file}(file=${'qmark.png'})}" alt="What is this?" height="25" width="25"/>
+            </div>
+        </td>
         <td th:text="${product.costUSD}">PRICE</td>
         <td>
             <form method="post">

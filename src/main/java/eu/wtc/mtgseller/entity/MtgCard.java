@@ -18,8 +18,8 @@ public class MtgCard
     @Column(name="card_id")
     private int id;
 
-    @Column(name = "quality")
-    private String quality;
+    @Column(name = "condition")
+    private String condition;
     // this should be changed to enum
 
     @Column(name = "card_name")

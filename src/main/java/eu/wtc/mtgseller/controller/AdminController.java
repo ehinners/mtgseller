@@ -48,23 +48,34 @@ public class AdminController
     }
 
     @RequestMapping(value ="AddCard", method = RequestMethod.POST)
-    public String processAddCard(@RequestParam String newName, String newSet, String newImageLocation, String initialAvailable, String newPrice)
+    public String processAddCard(@RequestParam String newName, String newSet, String newImageLocation, String initialAvailable, String newPrice, String condition)
     {
-        System.out.println(newName + "" + newSet + "" +newImageLocation + "" +initialAvailable + "" +newPrice);
+        System.out.println(newName + "" + newSet + "" +newImageLocation + "" +initialAvailable + ""+ condition + "" +newPrice);
         return "redirect:";
     }
 
 
     @RequestMapping(value ="UpdateCard", method = RequestMethod.GET)
-    public String ShowAdminDetail(Model model)
+    public String ShowAdminDetail(Model model, @RequestParam("id") int cardID)
     {
+        model.addAttribute("product", cardService.getMtgCard(cardID));
+        List<CardListing>  listList = cardInventoryService.getListingList();
+        CardListing tempListing = new CardListing();
+        for(CardListing listing : listList)
+        {
+            if(listing.getCardId() == cardID)
+            {
+                tempListing = listing;
+            }
+        }
+        model.addAttribute("listing", tempListing);
         return "supersecretadmindetailpage9888";
     }
 
     @RequestMapping(value ="UpdateCard", method = RequestMethod.POST)
-    public String processUpdateCard(@RequestParam String newName, String newSet, String newImageLocation, String initialAvailable, String newPrice)
+    public String processUpdateCard(@RequestParam String newName, String newSet, String newImageLocation, String initialAvailable, String newPrice, String condition)
     {
-        System.out.println(newName + "" + newSet + "" +newImageLocation + "" +initialAvailable + "" +newPrice);
+        System.out.println(newName + "" + newSet + "" +newImageLocation + "" +initialAvailable + ""+ condition + "" +newPrice);
         return "redirect:";
     }
 }

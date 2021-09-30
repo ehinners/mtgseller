@@ -17,3 +17,22 @@ body
 th{
     color: blueviolet;
 }
+
+.question {
+    position: relative;
+}
+
+.question:hover:after {
+    position: absolute;
+    content: attr(title);
+    display: inline-block;
+    left: 0px;
+    top: 0px;
+    cols:'60';
+    rows:'8';
+    font-size: 8px;
+    padding: 5px;
+    background-color: black;
+    color: white;
+    white-space: pre-wrap;
+}
