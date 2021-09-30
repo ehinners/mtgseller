@@ -39,4 +39,10 @@ public class BasicCardService implements CardService
         cardRepository.findAll().forEach(list::add);
         return list;
     }
+
+    @Override
+    public void saveCard(MtgCard mtgCard)
+    {
+        cardRepository.save(mtgCard);
+    }
 }

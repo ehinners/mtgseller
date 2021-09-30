@@ -123,6 +123,7 @@ public class DetailController
                 }
             }
         }
+        cart.clear();
         return "redirect:";
     }
 }

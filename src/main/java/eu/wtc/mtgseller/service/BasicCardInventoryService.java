@@ -1,6 +1,7 @@
 package eu.wtc.mtgseller.service;
 
 import eu.wtc.mtgseller.entity.CardListing;
+import eu.wtc.mtgseller.entity.MtgOrder;
 import eu.wtc.mtgseller.repo.CardInventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,12 @@ public class BasicCardInventoryService implements CardInventoryService
         List<CardListing> list = new ArrayList<>();
         cardInventoryRepository.findAll().forEach(list::add);
         return list;
+    }
+
+    @Override
+    public void setCardListing(CardListing cardListing)
+    {
+        cardInventoryRepository.save(cardListing);
     }
 
     @Override

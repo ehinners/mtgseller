@@ -9,4 +9,6 @@ public interface CardService
     MtgCard getMtgCard(int mtgCardId);
 
     List<MtgCard> getCardList();
+
+    void saveCard(MtgCard mtgCard);
 }
