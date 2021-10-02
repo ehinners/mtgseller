@@ -11,4 +11,8 @@ public interface CardService
     List<MtgCard> getCardList();
 
     void saveCard(MtgCard mtgCard);
+
+    public void deleteCard(int cardID);
+
+    boolean cardExists(int cardId);
 }

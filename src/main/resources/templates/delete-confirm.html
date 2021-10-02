@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Are You Sure?</title>
+  <link th:href="@{/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<table>
+  <tr>
+    <th>Set</th>
+    <th></th> <!-- IMAGE -->
+    <th></th> <!-- BUTTON OPTIONS -->
+  </tr>
+  <tr>
+    <td th:text="${product.setName}">SET</td>
+    <td>
+      <img class="productImage" th:src="@{/img/{file}(file=${product.cardImageFileName})}" th:alt="${product.cardName}">
+    </td>
+    <td>
+      <h3>Are you SURE you want to delete <b><u> [[${product.cardName}]]?</u> </b></h3>
+      <br/>
+      <button  th:onclick="|document.location='@{/admin}'|">NO</button>
+      <br/>
+      <button  th:onclick="|document.location='@{delete(id=${product.id})}'|">YES</button>
+    </td>
+
+  </tr>
+
+</table>
+</body>
+</html>

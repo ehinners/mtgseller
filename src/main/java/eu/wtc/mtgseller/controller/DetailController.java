@@ -31,25 +31,13 @@ public class DetailController
     {
         this.cardService = cs;
         this.cardInventoryService = cis;
-
     }
 
     @RequestMapping(value ="update", method = RequestMethod.GET)
     public String ShowItemDetail(Model model, @RequestParam("id") int cardId)
     {
-        List<CardListing> listList = new ArrayList<>();
-        listList = cardInventoryService.getListingList();
-        CardListing matchList = new CardListing();
-        for(CardListing cl : listList)
-        {
-            if(cl.getCardId()==cardId)
-            {
-                matchList = cl;
-            }
-        }
-
         model.addAttribute("product", cardService.getMtgCard(cardId));
-        model.addAttribute("listing", matchList);
+        model.addAttribute("listing", cardInventoryService.getCardListingByCardID(cardId));
         return "item-detail";
     }
 
@@ -61,7 +49,8 @@ public class DetailController
 
         for(MtgOrder order : cart)
         {
-            if(order.getCard().getId() == cardId)
+            //if(order.getCard().getId() == cardId)
+            if(order.getCardId() == cardId)
             {
                 order.setQuantityChosen(count);
                 tempOrder = order;
@@ -71,11 +60,14 @@ public class DetailController
 
         if(!idFound)
         {
-            tempOrder.setCard(cardService.getMtgCard(cardId));
+            tempOrder.setCardId(cardId);
+            //tempOrder.setCard(cardService.getMtgCard(cardId));
             tempOrder.setQuantityChosen(count);
             cart.add(tempOrder);
         }
-        else if(tempOrder.getQuantityChosen()<=0)
+
+
+        if(tempOrder.getQuantityChosen()<=0)
         {
             cart.remove(tempOrder);
         }
@@ -84,7 +76,7 @@ public class DetailController
         System.out.println("Cart Contains:");
         for(MtgOrder order : cart)
         {
-            System.out.println(order.getCard().getCardName()+" x "+ order.getQuantityChosen());
+            System.out.println("Card Id Of "+order.getCardId()+" x "+ order.getQuantityChosen());
         }
         //////////////////
         return "redirect:";
@@ -93,14 +85,38 @@ public class DetailController
     @RequestMapping(value="checkout")
     public String showCart(Model model)
     {
+        MtgCard tempCard = new MtgCard();
+        List<MtgCard> selectedCards = new ArrayList<>();
         double subtotal = 0.00;
+
+        int tempId = 0;
+
+        for(MtgOrder mo : cart)
+        {
+            tempId = mo.getCardId();
+            if(!cardService.cardExists(tempId))
+            {
+                return "inventoryExceededRedirect";
+            }
+        }
+
         for(MtgOrder order:cart)
         {
-            subtotal += order.getQuantityChosen()*order.getCard().getCostUSD();
+            if(cardService.cardExists(order.getCardId()))
+            {
+                tempCard = cardService.getMtgCard(order.getCardId());
+                selectedCards.add(cardService.getMtgCard(order.getCardId()));
+                subtotal += order.getQuantityChosen()*tempCard.getCostUSD();
+            }
+            else
+            {
+                cart.remove(order);
+            }
         }
         double tax = stateTax*subtotal;
         double total = subtotal+tax;
         model.addAttribute("cart", cart);
+        model.addAttribute("selectedCards", selectedCards);
         model.addAttribute("subtotal", subtotal);
         model.addAttribute("tax", tax);
         model.addAttribute("total", total);
@@ -111,19 +127,62 @@ public class DetailController
     public String updateListingsFromConfirmation()
     {
         int newCount;
-        List<CardListing> listList = cardInventoryService.getListingList();
-        for(CardListing cl : listList)
+        boolean inventoryExceeded = false;
+        CardListing tempListing = new CardListing();
+        int tempId = 0;
+
+        int deubug = 0;
+        System.out.println("Substep 1");
+
+        for(MtgOrder mo : cart)
         {
+            tempId = mo.getCardId();
+            if(cardService.cardExists(tempId))
+            {
+                System.out.print(deubug + " ");
+                tempListing = cardInventoryService.getCardListingByCardID(tempId);
+                System.out.print("a");
+                //System.out.println("listing amount :" + tempListing.getCount());
+                System.out.println("chosen in cart: " + mo.getQuantityChosen());
+                newCount = tempListing.getCount() - mo.getQuantityChosen();
+                System.out.print("b");
+                if(newCount < 0)
+                {
+                    inventoryExceeded = true;
+                    System.out.print("c");
+                }
+                System.out.print("d.1");
+            }
+            else
+            {
+                inventoryExceeded = true;
+                System.out.print("d.2");
+            }
+            deubug++;
+        }
+
+        System.out.println("Substep 2");
+
+        if(inventoryExceeded)
+        {
+            System.out.println("Substep 3 a");
+            return "inventoryExceededRedirect";
+        }
+        else
+        {
+            System.out.println("Substep 2 b");
             for(MtgOrder mo : cart)
             {
-                if(mo.getCard().getId() == cl.getCardId())
-                {
-                    newCount = cl.getCount() - mo.getQuantityChosen();
-                    cardInventoryService.updateListing(cl.getCardId(), newCount);
-                }
+                tempId = mo.getCardId();
+                tempListing = cardInventoryService.getCardListingByCardID(tempId);
+                newCount = tempListing.getCount() - mo.getQuantityChosen();
+                cardInventoryService.updateListing(tempId, newCount);
             }
+            System.out.println("Substep 3");
+
+            cart.clear();
         }
-        cart.clear();
+        System.out.println("Substep 4");
         return "redirect:";
     }
 }

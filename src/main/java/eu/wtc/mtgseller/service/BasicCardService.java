@@ -45,4 +45,25 @@ public class BasicCardService implements CardService
     {
         cardRepository.save(mtgCard);
     }
+
+    @Override
+    public void deleteCard(int cardID)
+    {
+        Optional<MtgCard> m = cardRepository.findById(cardID);
+        if (m.isPresent())
+        {
+            cardRepository.deleteById(cardID);
+        }
+    }
+
+    @Override
+    public boolean cardExists(int cardId)
+    {
+        Optional<MtgCard> c = cardRepository.findById(cardId);
+        if(c.isPresent())
+        {
+            return true;
+        }
+        return false;
+    }
 }

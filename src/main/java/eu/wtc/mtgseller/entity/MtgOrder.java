@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MtgOrder
 {
-    private MtgCard card;
+    private int cardId;
     private int quantityChosen;
 }

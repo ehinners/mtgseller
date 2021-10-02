@@ -12,7 +12,13 @@ public interface CardInventoryService
 
     List<CardListing> getListingList();
 
+    CardListing getCardListingByCardID(int cardID);
+
     public void updateListing(int cardID, int newCount);
 
     void setCardListing(CardListing cardListing);
+
+    void deleteCardListing(int listingID);
+
+    void deleteCardListingByCardID(int cardID);
 }

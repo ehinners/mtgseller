@@ -104,20 +104,12 @@ public class AdminController
                 cardID = card.getId() + 1;
             }
         }
+
         System.out.println("CardID: " + cardID + " Name: "+ newName + " Set: " + newSet + " IMGLOC: " +newImageLocation + " Count: " +initialAvailable + " CND: "+ condition + " Price: " +newPrice);
 
         MtgCard newCard = AdminController.MapCard(cardID, newName, newSet, newImageLocation, newPrice, condition);
 
-        int listingID = 0;
-        for(CardListing listing : cardInventoryService.getListingList())
-        {
-            if(listing.getId() >= listingID)
-            {
-                listingID = listing.getId() + 1;
-            }
-        }
-
-        CardListing newInventory = AdminController.MapListing(listingID, cardID, initialAvailable);
+        CardListing newInventory = AdminController.MapListing(cardInventoryService.getCardListingByCardID(cardID).getId(), cardID, initialAvailable);
 
         cardService.saveCard(newCard);
         cardInventoryService.setCardListing(newInventory);
@@ -130,16 +122,8 @@ public class AdminController
     public String ShowAdminDetail(Model model, @RequestParam("id") int cardID)
     {
         model.addAttribute("product", cardService.getMtgCard(cardID));
-        List<CardListing>  listList = cardInventoryService.getListingList();
-        CardListing tempListing = new CardListing();
-        for(CardListing listing : listList)
-        {
-            if(listing.getCardId() == cardID)
-            {
-                tempListing = listing;
-            }
-        }
-        model.addAttribute("listing", tempListing);
+
+        model.addAttribute("listing", cardInventoryService.getCardListingByCardID(cardID));
         return "supersecretadmindetailpage9888";
     }
 
@@ -150,26 +134,30 @@ public class AdminController
 
         System.out.println("CardID: " + cardID + " Name: "+ newName + " Set: " + newSet + " IMGLOC: " +newImageLocation + " Count: " +initialAvailable + " CND: "+ condition + " Price: " +newPrice);
 
-
         MtgCard newCard = AdminController.MapCard(cardID, newName, newSet, newImageLocation, newPrice, condition);
 
-
-        int listingID = 0;
-        for(CardListing listing : cardInventoryService.getListingList())
-        {
-            if(listing.getCardId() == newCard.getId())
-            {
-                listingID = listing.getId();
-            }
-        }
-
-        CardListing newInventory = AdminController.MapListing(listingID, cardID, initialAvailable);
-
-
+        CardListing newInventory = AdminController.MapListing(cardInventoryService.getCardListingByCardID(cardID).getId(), cardID, initialAvailable);
 
         cardService.saveCard(newCard);
         cardInventoryService.setCardListing(newInventory);
 
+        return "redirect:";
+    }
+
+    @RequestMapping("/deleteConfirm")
+    public String deleteCardConfirm(Model model, @RequestParam("id") int cardId)
+    {
+        model.addAttribute("product", cardService.getMtgCard(cardId));
+        return "delete-confirm";
+    }
+
+    @RequestMapping("/delete")
+    public String deleteCard(Model model, @RequestParam("id") int cardId)
+    {
+        cardService.getMtgCard(cardId);
+        System.out.println(cardService.getMtgCard(cardId).getCardName() + " Deleted");
+        cardInventoryService.deleteCardListingByCardID(cardId);
+        cardService.deleteCard(cardId);
         return "redirect:";
     }
 }

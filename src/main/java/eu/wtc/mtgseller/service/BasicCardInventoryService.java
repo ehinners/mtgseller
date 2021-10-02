@@ -41,9 +41,47 @@ public class BasicCardInventoryService implements CardInventoryService
     }
 
     @Override
+    public CardListing getCardListingByCardID(int cardID)
+    {
+        for(CardListing listing : getListingList())
+        {
+            if(listing.getCardId() == cardID)
+            {
+                return listing;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public void setCardListing(CardListing cardListing)
     {
         cardInventoryRepository.save(cardListing);
+    }
+
+    @Override
+    public void deleteCardListing(int listingID)
+    {
+        for(CardListing c : cardInventoryRepository.findAll())
+        {
+            if(c.getCardId()==listingID)
+            {
+                cardInventoryRepository.delete(c);
+            }
+        }
+    }
+
+    @Override
+    public void deleteCardListingByCardID(int cardID)
+    {
+        for(CardListing cl : getListingList())
+        {
+            if(cl.getCardId() == cardID)
+            {
+                deleteCardListing(cl.getId());
+            }
+        }
     }
 
     @Override
