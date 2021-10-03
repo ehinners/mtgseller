@@ -13,6 +13,12 @@ create table Card_inventory(
     count int not null default 0
 );
 
+create table State_Tax(
+    st_id int primary key,
+    state_initials varchar(2) not null,
+    multiplier float not null
+);
+
 alter table Card_inventory
     add constraint CK_CardInventory_Min check (count>=0);
 

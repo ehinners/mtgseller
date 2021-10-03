@@ -44,6 +44,17 @@
         </tr>
 
     </table>
-    <button  th:onclick="|document.location='@{/list/checkout}'|">CHECKOUT</button>
+    <form method="post" th:action="@/checkout" th:object="${stuff}">
+        <label for="state">
+            <select id="state"  name="state"> Please Select Your State:
+                <option th:each="state : ${taxList}" th:text="${state.state_initials}">STATE</option>
+            </select>
+        </label>
+
+        <label for="submitButton">CHECKOUT
+            <input id="submitButton" type="submit" value="CHECKOUT" th:field="*{state_initials}"/>
+        </label>
+    </form>
+    <!--<button  th:onclick="|document.location='@{/list/checkout}'|">CHECKOUT</button>-->
 </body>
 </html>

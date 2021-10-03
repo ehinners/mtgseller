@@ -15,3 +15,9 @@ values(2,2,5);
 
 insert into card_inventory(ci_id, card_id, count)
 values(3,3,12);
+
+insert into State_Tax(st_id, state_initials, multiplier)
+values ( 1,'WI',0.05);
+
+insert into State_Tax(st_id, state_initials, multiplier)
+values ( 2,'IL',0.0625);

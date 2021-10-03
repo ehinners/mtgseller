@@ -5,6 +5,7 @@ import eu.wtc.mtgseller.entity.MtgCard;
 import eu.wtc.mtgseller.entity.MtgOrder;
 import eu.wtc.mtgseller.service.CardInventoryService;
 import eu.wtc.mtgseller.service.CardService;
+import eu.wtc.mtgseller.service.StateTaxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,12 +24,14 @@ public class AdminController
 {
     private CardService cardService;
     private CardInventoryService cardInventoryService;
+    private StateTaxService stateTaxService;
 
     @Autowired
-    public AdminController(CardService cs, CardInventoryService cis)
+    public AdminController(CardService cs, CardInventoryService cis, StateTaxService sts)
     {
         this.cardService = cs;
         this.cardInventoryService = cis;
+        this.stateTaxService = sts;
     }
 
     @RequestMapping("")

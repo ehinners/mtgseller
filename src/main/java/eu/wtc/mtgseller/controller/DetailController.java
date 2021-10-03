@@ -3,14 +3,14 @@ package eu.wtc.mtgseller.controller;
 import eu.wtc.mtgseller.entity.CardListing;
 import eu.wtc.mtgseller.entity.MtgCard;
 import eu.wtc.mtgseller.entity.MtgOrder;
+import eu.wtc.mtgseller.entity.StateTax;
 import eu.wtc.mtgseller.service.CardInventoryService;
 import eu.wtc.mtgseller.service.CardService;
+import eu.wtc.mtgseller.service.StateTaxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -22,15 +22,16 @@ public class DetailController
 {
     private CardService cardService;
     private CardInventoryService cardInventoryService;
-    private double stateTax = 0.0765;
+    private StateTaxService stateTaxService;
 
     static List<MtgOrder> cart = new ArrayList<>();
 
     @Autowired
-    public DetailController(CardService cs, CardInventoryService cis)
+    public DetailController(CardService cs, CardInventoryService cis, StateTaxService sts)
     {
         this.cardService = cs;
         this.cardInventoryService = cis;
+        this.stateTaxService = sts;
     }
 
     @RequestMapping(value ="update", method = RequestMethod.GET)
@@ -82,8 +83,8 @@ public class DetailController
         return "redirect:";
     }
 
-    @RequestMapping(value="checkout")
-    public String showCart(Model model)
+    @RequestMapping(value = "checkout", method = RequestMethod.POST)
+    public String showCart(Model model, @ModelAttribute StateTax stuff)
     {
         MtgCard tempCard = new MtgCard();
         List<MtgCard> selectedCards = new ArrayList<>();
@@ -113,6 +114,7 @@ public class DetailController
                 cart.remove(order);
             }
         }
+        double stateTax = stateTaxService.getPrimary().getMultiplier();
         double tax = stateTax*subtotal;
         double total = subtotal+tax;
         model.addAttribute("cart", cart);
